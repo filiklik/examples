@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+    <jms:activemq-connector name="Active_MQ" username="admin" password="admin" brokerURL="tcp://localhost:61616" validateConnections="true" maxRedelivery="3" doc:name="Active MQ">
+        <reconnect count="3"/>
+    </jms:activemq-connector>
+    <flow name="Transaction_rollback_exception_flow" processingStrategy="synchronous">
+        <jms:inbound-endpoint exchange-pattern="request-response" queue="inQ" connector-ref="Active_MQ" doc:name="JMS">
+            <jms:transaction action="ALWAYS_BEGIN"/>
+        </jms:inbound-endpoint>
+        <jms:outbound-endpoint queue="outQ" connector-ref="Active_MQ" doc:name="JMS">
+            <jms:transaction action="JOIN_IF_POSSIBLE"/>
+        </jms:outbound-endpoint>
+        <logger message=" #[payload]" level="INFO" doc:name="Logger"/>
+        <scripting:component doc:name="Groovy">
+            <scripting:script engine="Groovy"><![CDATA[if(true){
+throw new RuntimeException("just for testing")
+}]]></scripting:script>
+        </scripting:component>
+        <catch-exception-strategy doc:name="Catch Exception Strategy">
+            <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+        </catch-exception-strategy>
+    </flow>
+</mule>
