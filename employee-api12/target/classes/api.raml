@@ -1,0 +1,68 @@
+#%RAML 0.8
+baseUri: https://mocksvc.mulesoft.com/mocks/40475b4a-b49c-4185-9e9a-27919dac9bad
+title: Emp
+version: 1.0
+/employees:
+  description: get all employee's
+  get:
+    queryParameters: 
+      name:
+        description: Filters all employees having name like <name>
+        required : false
+        type: string
+        example: "shankar"
+    responses: 
+      200:  
+        body: 
+          application/json:
+            example: !include ./examples/employees.json
+  post:
+    body: 
+      application/json:
+        example: !include ./examples/employee.json
+    responses: 
+      201:
+        body: 
+          application/json:
+            example: |
+              {
+                "status" : " employe created"
+              }
+      422:
+        body:
+          application/json:
+            example: |
+              {
+                "status": "Employee Already Exists"
+              }
+  /{employeeId}:
+   get:
+    description: get employee by ID
+    responses: 
+      200:
+        body: 
+          application/json:
+            example: !include ./examples/employee.json
+   put:
+     description: Update the employee
+     body: 
+       application/json:
+         example: !include ./examples/employee.json
+     responses: 
+       201:
+         body: 
+           application/json:
+             example: |
+               {
+                "Status": "Employee Updated"
+               }
+   delete:
+    description: delete an Employee by ID
+    responses: 
+      200:
+        body: 
+          application/json:
+            example: |
+              {
+                "status" : "employee deleted"
+              } 

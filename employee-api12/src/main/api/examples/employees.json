@@ -1,0 +1,16 @@
+[
+  {
+    "emp_id": 3106,
+    "emp_salary": 100000,
+    "email": "skenguva@miraclesoft.com",
+    "status": "inactive",
+    "emp_name": "shankar santosh"
+  },
+  {
+    "emp_id": 3109,
+    "emp_salary": 999999,
+    "email": "vivekc@virtusapolaris",
+    "status": "inactive",
+    "emp_name": "vivek"
+  }
+]
