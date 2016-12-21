@@ -26,6 +26,7 @@ throw new RuntimeException("just for testing")
         </scripting:component>
         <catch-exception-strategy doc:name="Catch Exception Strategy">
             <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+            <logger message="#[payload]" level="INFO" doc:name="Logger"/>
         </catch-exception-strategy>
     </flow>
 </mule>
