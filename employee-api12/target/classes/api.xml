@@ -31,7 +31,7 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
 }]]></dw:set-payload>
         </dw:transform-message>
         <enricher doc:name="Message Enricher" source="#[payload]" target="#[flowVars['exists']]">
-            <db:update config-ref="MySQL_Configuration" doc:name="Database">
+            <db:insert config-ref="MySQL_Configuration" doc:name="Database">
                 <db:parameterized-query><![CDATA[UPDATE employee 
 SET emp_id = #[payload.emp_id],emp_salary = #[payload.emp_salary],emp_name=#[payload.emp_name], email=#[payload.email]
 WHERE  emp_id = #[flowVars.employeeId]
@@ -39,7 +39,7 @@ WHERE  emp_id = #[flowVars.employeeId]
              or emp_salary != #[payload.emp_salary] 
              or emp_name != #[payload.emp_name] 
              or email != #[payload.email] )]]></db:parameterized-query>
-            </db:update>
+            </db:insert>
         </enricher>
   
 

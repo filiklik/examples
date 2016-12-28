@@ -178,7 +178,7 @@ data: {
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/java
 %namespace ns0 http://soap.training.mulesoft.com/
-%type currency = :string {format: "###.00"}
+%type currency = :string {format: "###.0"}
 %type flights = :object {class: "com.mulesoft.training.Flight"}
 ---
 flights : payload.ns0#listAllFlightsResponse.*return map {
